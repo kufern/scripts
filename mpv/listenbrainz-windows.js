@@ -1,5 +1,5 @@
 /**
- * mpv script to submit listening activity to ListenBrainz
+ * mpv script to submit listening activity to ListenBrainz (MusicBrainz's listening tracker).
  *
  * Features:
  * - Automatically submits "playing_now" notifications when a file loads
@@ -7,16 +7,16 @@
  * - Handles MusicBrainz metadata when available
  * - Requires LISTENBRAINZ_USER_TOKEN environment variable
  *
+ * Place this file in mpv\scripts or [mpv]\current\portable_config\scripts
  *
  * @version 3.1
  * @requires mpv with JavaScript scripting support
- * @see {@link https://listenbrainz.org}
- * @see {@link https://musicbrainz.org}
+ * @see {@link https://listenbrainz.org|ListenBrainz}
+ * @see {@link https://musicbrainz.org|MusicBrainz}
  * 
- * Originally made by Alexandre Rousseau (madeindjs)
- * Edited for Windows by kufern
+ * Original by Alexandre Rousseau (madeindjs)
+ * Edited for Windows by kufern (ft. Deepseek)
  */
-
 var version = "3.1";
 var listenbrainzToken = mp.utils.getenv("LISTENBRAINZ_USER_TOKEN"); // https://listenbrainz.org/profile/
 var minListenTime = 30 * 1000;
@@ -89,32 +89,21 @@ function submitListen(listenType) {
   var body = { listen_type: listenType, payload: [ payload, ] };
 
   // a way to escape chars
-  var escapedJson = JSON.stringify(body).replace(/"/g, '\\"');
+ var jsonBody = JSON.stringify(body);
 
-  var command = [
-    "curl",
-    "-X POST",
-    "-H  'Authorization: Token " + listenbrainzToken + "'",
-    "-H 'Content-Type: application/json'",
-    '--data "' + escapedJson + '"',
-    "https://api.listenbrainz.org/1/submit-listens 2> /dev/null",
-  ];
-
-  mp.msg.info("send API call", command.join(" "));
-
-  var res = mp.command_native({
-  name: "subprocess",
-  capture_stdout: true,
-  capture_stderr: true,
-  args: [
-    "curl",
-    "-X", "POST",
-    "-H", "Authorization: Token " + listenbrainzToken,
-    "-H", "Content-Type: application/json",
-    "--data", JSON.stringify(body),
-    "https://api.listenbrainz.org/1/submit-listens"
-	]
-  });
+ var res = mp.command_native({
+   name: "subprocess",
+   capture_stdout: true,
+   capture_stderr: true,
+   args: [
+     "curl",                     // or "curl.exe" on Windows
+     "-X", "POST",
+     "-H", "Authorization: Token " + listenbrainzToken,
+     "-H", "Content-Type: application/json",
+     "--data", jsonBody,
+     "https://api.listenbrainz.org/1/submit-listens"
+   ],
+ });
 
   if (res.status === 0) {
     mp.msg.info(listenType + " sent to musicbrainz");
