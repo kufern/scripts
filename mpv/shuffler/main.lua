@@ -17,7 +17,7 @@ end
 
 while true do
 	io.write("Add new directory: ")
-	dir = io.read()
+	local dir = io.read()
 
 	if dir == "" then
 		print("No data written")
@@ -46,5 +46,13 @@ while true do
 		elseif not metadata.is_directory then
 			print("This is not a directory.")
 		end
+	end
+end
+
+-- shuffler
+
+local file_shuffle = io.open(file_path, "r")
+if file_shuffle then
+	for line in file_shuffle:lines() do
 	end
 end
