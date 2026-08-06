@@ -4,6 +4,7 @@ file_path = mp.get_script_directory() .. "/dir.txt"
 -- add directories
 
 existing_dir = {}
+
 local file_read = io.open(file_path, "r")
 if file_read then
 	for line in file_read:lines() do
@@ -17,7 +18,6 @@ end
 
 io.write("Add new directory?")
 local ans = io.read()
-
 if ans:lower() == "y" then
 	while true do
 		io.write("New directory: ")
@@ -84,4 +84,18 @@ end
 
 for dir in pairs(existing_dir) do
 	recursive_files(dir)
+end
+
+-- shuffle files
+
+local total_index = #all_files
+local already_picked = {}
+local shuffled
+
+for i = 1, math.min(50, total_index) do
+	local file_index
+	repeat
+		file_index = math.random(1, total_index)
+	until not already_picked(file_index)
+	already_picked(file_index) = true
 end
