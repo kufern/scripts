@@ -105,3 +105,19 @@ for i = 1, math.min(50, total_index) do
 	already_picked[file_index] = true
 	table.insert(shuffled, all_files[file_index])
 end
+
+shuffled_files = mp.get_script_directory() .. "/shuffle.m3u8"
+
+if shuffled_files then
+	local clear_shuffle = io.open(shuffled_files, "w")
+	clear_shuffle:close()
+
+	local append_shuffle = io.open(shuffled_files, "a")
+	for _, name in shuffled do
+		append_shuffle:write(name .. "\n")
+		append_shuffle:close()
+	end
+end
+
+-- play files
+
