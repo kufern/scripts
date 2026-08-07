@@ -65,13 +65,13 @@ audio_extensions = {
 }
 
 function recursive_files(dir)
-	local all_files_in_dir = utils.readdir(dir, "files") or {}
+	local all_files_in_dir = utils.readdir(dir) or {}
 	for _, name in ipairs(all_files_in_dir) do
 		if name ~= "." and name ~= ".." then
 			local entire_path = dir .. "/" .. name
 			local info = utils.file_info(entire_path)
 			if info and info.is_directory then
-				table.insert(all_files, file)
+				recursive_files(entire_path)
 			else
 				local extension = name:match("%.([^%.]+)$")
 				if extension and audio_extensions[extension:lower()] then
@@ -90,12 +90,18 @@ end
 
 local total_index = #all_files
 local already_picked = {}
-local shuffled
+local shuffled = {}
+
+if total_index == 0 then
+	print("No files found.")
+	return
+end
 
 for i = 1, math.min(50, total_index) do
 	local file_index
 	repeat
 		file_index = math.random(1, total_index)
-	until not already_picked(file_index)
-	already_picked(file_index) = true
+	until not already_picked[file_index]
+	already_picked[file_index] = true
+	table.insert(shuffled, all_files[file_index])
 end
