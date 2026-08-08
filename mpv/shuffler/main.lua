@@ -107,16 +107,12 @@ for i = 1, math.min(50, total_index) do
 end
 
 shuffled_files = mp.get_script_directory() .. "/shuffle.m3u8"
-
-if shuffled_files then
-	local clear_shuffle = io.open(shuffled_files, "w")
-	clear_shuffle:close()
-
-	local append_shuffle = io.open(shuffled_files, "a")
-	for _, name in shuffled do
-		append_shuffle:write(name .. "\n")
-		append_shuffle:close()
+append_shuffle = io.open(shuffled_files, "w")
+if append_shuffle then
+	for _, file in ipairs(shuffled) do
+		append_shuffle:write(file .. "\n")
 	end
+	append_shuffle:close()
 end
 
 -- play files
