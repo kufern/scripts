@@ -1,5 +1,14 @@
 utils = require("mp.utils") -- mpv helper functions
+math.randomseed(os.time()) -- random seed
 file_path = mp.get_script_directory() .. "/dir.txt"
+
+function normalize_path(path)
+	path = path:gsub("\\", "/")
+	path = path:gsub("//+", "/")
+	return path
+end
+
+file_path = normalize_path(file_path)
 
 if mp.get_property_native("idle-active") then
 
@@ -18,7 +27,7 @@ if mp.get_property_native("idle-active") then
 		file_read:close()
 	end
 
-	io.write("Add new directory?")
+	io.write("Add new directory? ")
 	local ans = io.read()
 	if ans:lower() == "y" then
 		while true do
@@ -32,6 +41,7 @@ if mp.get_property_native("idle-active") then
 				break
 			else
 				local clean_dir = dir:gsub("^%s*(.-)%s*$", "")
+				clean_dir = normalize_path(clean_dir)
 				local metadata = utils.file_info(clean_dir)
 				if metadata and metadata.is_directory then
 					if existing_dir[clean_dir] then
@@ -71,6 +81,7 @@ if mp.get_property_native("idle-active") then
 		for _, name in ipairs(all_files_in_dir) do
 			if name ~= "." and name ~= ".." then
 				local entire_path = dir .. "/" .. name
+				entire_path = normalize_path(entire_path)
 				local info = utils.file_info(entire_path)
 				if info and info.is_directory then
 					recursive_files(entire_path)
