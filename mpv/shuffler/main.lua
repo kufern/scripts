@@ -40,7 +40,7 @@ if mp.get_property_native("idle-active") then
 				print("Completed adding directories.")
 				break
 			else
-				local clean_dir = dir:gsub("^%s*(.-)%s*$", "")
+				local clean_dir = dir:gsub("^%s*(.-)%s*$", "%1")
 				clean_dir = normalize_path(clean_dir)
 				local metadata = utils.file_info(clean_dir)
 				if metadata and metadata.is_directory then
