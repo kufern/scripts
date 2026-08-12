@@ -6,7 +6,7 @@ audio_extensions = {
 	m4p = true, mmf = true, mp1 = true, mp2 = true, mp3 = true, mpc = true, ogg = true, oga = true, mogg = true, opus = true, ra = true,
 	rw = true, raw = true, rf64 = true, sln = true, tta = true, voc = true, vox = true, wav = true, wma = true, wv = true, webm = true,
 	8svx = true, cda = true
-} --set of audio extensions
+} -- set of audio extensions
 
 all_files = {}
 

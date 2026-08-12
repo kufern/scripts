@@ -8,5 +8,5 @@ Put these in the mpv script folder, which is:
 - [scoop]\apps\mpv\current\portable_config\scripts (Windows, using scoop)
 
 #### Scripts
-- [listenbrainz-windows.js](/mpv/listenbrainz-windows.js): I used Deepseek to edit this script in order to make it work on Windows
-- [shuffler](/mpv/shuffler/): Nothing here yet, but I'm planning to make this a music shuffler for mpv
+- [listenbrainz-windows.js](/mpv/listenbrainz-windows.js): Listenbrainz scrobbler (I used Deepseek to edit this script in order to make it work on Windows)
+- [shuffler](/mpv/shuffler/): A shuffler for audio files
